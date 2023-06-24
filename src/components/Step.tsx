@@ -9,6 +9,11 @@ const Step:FC<StepI>=({domanda, answer,visible,setStep, steps, index})=> {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleOnChange = async(indexAnswer:number,indexS:number , file:File|undefined|string|number) => {
+  
+
+
+  console.log("change")
+ 
       const stepsT=[...steps]
       stepsT[indexS].answer[indexAnswer].dati?.forEach(async item=>{
         const risultatoFile=file as File;
@@ -25,20 +30,16 @@ const Step:FC<StepI>=({domanda, answer,visible,setStep, steps, index})=> {
           v.name=risultatoFile.name;
           item.risultato= v;};
         
-        }else if(!file as boolean){
-
-          item.risultato= file;
-
-
+        }else{   
+          setIsChecked(!isChecked);  stepsT[indexS].answer[indexAnswer]["checked"]=isChecked;
+        
         }
-        
-        
- 
 
+      
+     
       }) ;
      
-      if(file===undefined){   
-        setIsChecked(!isChecked);  stepsT[indexS].answer[indexAnswer]["checked"]=isChecked;
+      if(!file){}else{
         stepsT[indexS].answer=stepsT[indexS].answer.filter(Item=>Item["checked"]===true)
       }
      
