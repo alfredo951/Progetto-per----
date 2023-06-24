@@ -15,9 +15,17 @@ const Step:FC<StepI>=({domanda, answer,visible,setStep, steps, index})=> {
   console.log("change")
  
       const stepsT=[...steps]
+      if(!file){
+        setIsChecked(!isChecked);  stepsT[indexS].answer[indexAnswer]["checked"]=isChecked;
+        }
+
+    
       stepsT[indexS].answer[indexAnswer].dati?.forEach(async item=>{
         const risultatoFile=file as File;
         console.log(file);
+ 
+
+
         if(risultatoFile){
 
           var risultatoJsonFile=await jsonnfile(risultatoFile);
@@ -30,12 +38,11 @@ const Step:FC<StepI>=({domanda, answer,visible,setStep, steps, index})=> {
           v.name=risultatoFile.name;
           item.risultato= v;};
         
-        }else{   
-          setIsChecked(!isChecked);  stepsT[indexS].answer[indexAnswer]["checked"]=isChecked;
-        
         }
 
-      
+      if(file as string || file as number){
+        item.risultato=file;
+      }
      
       }) ;
      
