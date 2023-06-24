@@ -34,7 +34,7 @@ useEffect(() => {
     <h2>
     Documento mandato! 
 
-    {documento?.documento[0].answer.map((item)=>(<>
+    {documento?.documneto[0].answer.map((item)=>(<>
      { item.text}
      {item.dati?.map((itemDati)=>(<>
      

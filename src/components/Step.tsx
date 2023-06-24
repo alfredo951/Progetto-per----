@@ -18,31 +18,31 @@ const Step:FC<StepI>=({domanda, answer,visible,setStep, steps, index})=> {
       if(!file){
         setIsChecked(!isChecked);  stepsT[indexS].answer[indexAnswer]["checked"]=isChecked;
         }
+   
 
+        
     
       stepsT[indexS].answer[indexAnswer].dati?.forEach(async item=>{
         const risultatoFile=file as File;
         console.log(file);
  
+     
 
+   
 
-        if(risultatoFile){
-
-          var risultatoJsonFile=await jsonnfile(risultatoFile);
+          var risultatoJsonFile=risultatoFile instanceof File? await jsonnfile(risultatoFile):file;
           
         console.log(risultatoJsonFile);
 
-        if(risultatoJsonFile){
+        if(risultatoJsonFile  ){
           var v:{data:string,name:string}={data:"", name:""};
           v.data=risultatoJsonFile as string;
-          v.name=risultatoFile.name;
+          v.name=risultatoFile as File ?risultatoFile.name :item.datorichiesto;
           item.risultato= v;};
         
-        }
+        
 
-      if(file as string || file as number){
-        item.risultato=file;
-      }
+   
      
       }) ;
      

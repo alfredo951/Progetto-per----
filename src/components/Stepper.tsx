@@ -19,7 +19,7 @@ export interface StepIM{
     
 }
 export interface DocumentI{
-  documento:StepIM[]
+  documneto:StepIM[]
 
 }
 export interface FascicoloI{
@@ -221,6 +221,7 @@ return step
 
 
   const completeDocumento=()=>{
+    console.log(step)
     if(step[currentSlide].answer.filter((i)=>i.checked===true).length>1 || step[currentSlide].answer.filter((i)=>i.checked===true).length===0){
       alert("Seleziona solo una risposta")
        
