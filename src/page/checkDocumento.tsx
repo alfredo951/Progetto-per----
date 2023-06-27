@@ -46,6 +46,8 @@ return <></>
 
 
 
+
+
   return (
    <>
    
@@ -56,10 +58,26 @@ return <></>
     <h2>
     Documento mandato! 
 
- 
+    {documento && documento.documneto && documento.documneto[0] && documento.documneto[0].answer && documento.documneto[0].answer.map((item)=>(<>
+     { item.text}
+     {item.dati?.map((itemDati)=>(<>
+     
+     {itemDati.datorichiesto}
+     { itemDati.risultato as {data:string, name:string} ?<>
+     <DownloadButton 
+      data={(itemDati.risultato as {data:string, name:string}).data} 
+      name={(itemDati.risultato as {data:string, name:string}).name}    /></>:""}
+     
+     
+     </>))}
+    
+    </>)
+     
+    )}
+
 
    </h2>
-   {insertDownload()}
+   
     </Column>
 
 

@@ -299,6 +299,7 @@ return step
       step[currentSlide].complete=true
  
     Navigate("/SendDocumenti")
+    console.log('docuemnto in stepper: ', step);
   Dispatch(setDocument(step))
     console.log(step)
   }
