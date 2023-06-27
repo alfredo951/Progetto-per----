@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setDocument } from '../store/Api';
 import { useNavigate } from 'react-router-dom';
 import { jsonnfile } from '../store/fileConvert';
+import { test } from 'node:test';
 export interface StepperI{
   steps:StepIM[];
   windowWidth:number;
@@ -44,18 +45,30 @@ export interface RisultatoI{
 }
 
 export interface RisultatoItemI{
-  name:string, data:string
+  name:string, data:string, dataisFile?:boolean
 }
 
 
 export interface Answer{
   text:String,
   img:string,
-  checked:boolean,
+  checked?:boolean,
+  checkedHidden?:boolean,
   input?:boolean,
+  select?:boolean,
+  inputSelect?:boolean
 
-  dati?:{datorichiesto:string,  inputType:string
-    inputLabel:string, risultato:string|File|number |undefined | RisultatoItemI}[];
+  dati:{
+    index:number;
+    datorichiesto:string,
+      inputType:string
+    inputLabel:string,
+    selectItems:{option:string,inputType?:string,
+    inputLabel?:string,
+  
+    datorichiesto?:string,}[],
+     risultato:string|File|number |undefined | RisultatoItemI
+    }[];
 }
  const Stepper:FC<StepperI>=({steps, windowWidth})=> {
  const Dispatch=useDispatch()
@@ -153,8 +166,59 @@ return step
         console.log(item.risultato)
         if(item.risultato){
           count= count+1;
-        }
+        }/*
+          const regexp = new RegExp('(?:\w*.?pec(?:.?\w+)*)');//PEC
+          if((item.risultato as RisultatoItemI) && (item.risultato as RisultatoItemI).data){
+          var test:boolean = regexp.test((item.risultato as RisultatoItemI).data);
 
+          if(item.datorichiesto==="PEC" && test===false){
+            count= count-1;
+             }}
+
+          //codice fiscale
+            const regex2 =new RegExp('^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$', 'i');;
+            if((item.risultato as RisultatoItemI) &&(item.risultato as RisultatoItemI).data){
+             var test2:boolean = regex2.test((item.risultato as RisultatoItemI).data);
+
+             if(item.datorichiesto==="Codice fiscale" && test2===false){
+              count= count-1;
+               }}  
+
+               //email
+               const regex3 =new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
+               if((item.risultato as RisultatoItemI)&&(item.risultato as RisultatoItemI).data){
+               var test3:boolean = regex3.test((item.risultato as RisultatoItemI).data);
+  
+               if(item.datorichiesto==="Email" && test3===false){
+                count= count-1;
+                 }  
+                }
+
+                 //telefono
+
+                 const regex4 =new RegExp("^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
+                 if((item.risultato as RisultatoItemI) &&(item.risultato as RisultatoItemI).data){
+                                var test4:boolean = regex4.test((item.risultato as RisultatoItemI).data );
+                   console.log(test4)
+                                if(item.datorichiesto==="telefono" && test4===false){
+                                 count= count-1;
+                  }  }
+                   
+                 const regex5 =new RegExp("(IT)?[0-9]{11} |");
+                 if((item.risultato as RisultatoItemI) && (item.risultato as RisultatoItemI).data){
+                 var test5:boolean = regex5.test((item.risultato as RisultatoItemI).data);
+                  
+                 if(item.datorichiesto==="P.IVA" && test5===false){
+                  count= count-1;
+                 }}
+        
+
+
+
+
+      
+     
+                */
 
       }))
       console.log(count,answers.dati && answers.dati.length )
@@ -197,13 +261,16 @@ return step
       if(currentSlide<steps.length-1){
         console.log(checkRisposte(step[currentSlide].answer.find((i)=>i.checked===true)))
         if((
-          step[currentSlide].answer.find((i)=>i.checked===true)?.input===false &&
-         (step[currentSlide].answer.filter((i)=>i.checked===true).length>1 || step[currentSlide].answer.filter((i)=>i.checked===true).length===0)) ||(step[currentSlide].answer.find((i)=>i.checked===true)?.input===true && checkRisposte(step[currentSlide].answer.find((i)=>i.checked===true)))){
+          !step[currentSlide].answer.find((i)=>i.checked===true) ||
+          (step[currentSlide].answer.find((i)=>i.checked===true)?.input===undefined &&
+         step[currentSlide].answer.filter((i)=>i.checked===true).length>1 )
+          || (step[currentSlide].answer.find((i)=>i.checked===true)?.input===true && checkRisposte(step[currentSlide].answer.find((i)=>i.checked===true) )))){
        alert("Seleziona solo una risposta")
        
         }else{
           console.log("ciao");
           setcurrentSlide(currentSlide+1)
+          step[currentSlide].answer=steps[currentSlide].answer.filter(Item=>Item["checked"]===true)
         step[currentSlide].complete=true
         }
         
@@ -226,7 +293,9 @@ return step
       alert("Seleziona solo una risposta")
        
     }else{
-    
+  
+       
+      
       step[currentSlide].complete=true
  
     Navigate("/SendDocumenti")
@@ -263,7 +332,7 @@ return step
 ))}
 </Row>
 <div style={{overflow:"hidden", position:"relative"}}>
-<div className='slider' style={{width:width}} ref={refSlider}>
+<div className='slider' style={{width:width, height:"100%",padding:"20px 0px"}} ref={refSlider}>
 {stepR.map((item, index)=>(
 
 

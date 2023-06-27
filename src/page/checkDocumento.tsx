@@ -4,6 +4,7 @@ import { IinitialState, removeDocument } from '../store/Api'
 import Column from '../components/Column'
 import Row from '../components/Row'
 import DownloadButton from '../components/DownnloadButton'
+import { RisultatoI, RisultatoItemI } from '../components/Stepper'
 
 export default function CheckDocumento() {
 
@@ -22,6 +23,27 @@ useEffect(() => {
         }
 }, [])
 
+const insertDownload=()=>   {
+
+
+if(documento && documento.documneto)
+documento.documneto[0].answer.forEach(item=>{
+    const isFile=item.dati.find(item=>item.inputType==="file")
+    if(isFile && isFile.risultato){
+  const dataResuorce= isFile.risultato as RisultatoItemI
+      if(dataResuorce)
+      {
+        return <><DownloadButton data={dataResuorce.data} name={dataResuorce.name} /></>
+      }
+
+}
+
+  })
+return <></>
+  
+ }
+
+
 
 
   return (
@@ -34,26 +56,10 @@ useEffect(() => {
     <h2>
     Documento mandato! 
 
-    {documento?.documneto[0].answer.map((item)=>(<>
-     { item.text}
-     {item.dati?.map((itemDati)=>(<>
-     
-     {itemDati.datorichiesto}
-     { itemDati.risultato as {data:string, name:string} ?<>
-     <DownloadButton 
-      data={(itemDati.risultato as {data:string, name:string}).data} 
-      name={(itemDati.risultato as {data:string, name:string}).name}    /></>:""}
-     
-     
-     </>))}
-    
-    </>)
-     
-    )}
-
+ 
 
    </h2>
-   
+   {insertDownload()}
     </Column>
 
 
